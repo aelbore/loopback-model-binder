@@ -1,6 +1,5 @@
 import Model from './model';
 import { Hook } from './utils';
-import * as loopback from 'loopback';
 
 let modelName, route;
 
