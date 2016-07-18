@@ -1,9 +1,10 @@
 import { EnableDisableRemoteMethods } from './utils';
+import { Model } from './index';
 
 let modelBootstrap = (app) => {
-  var models = app.models();
+  let models = Object.getOwnPropertyNames(Model.instance);
   models.forEach((model) => {
-    EnableDisableRemoteMethods(model, false);  
+    EnableDisableRemoteMethods(app.models[model], false);  
   });
 };
 
