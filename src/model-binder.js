@@ -4,13 +4,9 @@ import ModelBase from './model-base';
 import { BinderHelper } from './utils';
 import * as glob from 'glob';
 
-export default class ModelBinder {
-
-  constructor(Configs){
-    BinderHelper.init(Configs, __dirname);
-  }
-
-  bind(){
+let ModelBinder = {
+  bind: (config) => {
+    BinderHelper.init(config, __dirname);
     let configFiles = BinderHelper.files;
     if (configFiles){
       configFiles.forEach((element) => {
@@ -24,8 +20,9 @@ export default class ModelBinder {
             }
           }
         });
-      }, this);
+      });
     }
   }
+};
 
-}
+export { ModelBinder }
