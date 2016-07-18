@@ -12,8 +12,14 @@ let babelrc = JSON.parse(readFileSync(join(__dirname, '.babelrc'), 'utf-8'));
 
 let files = glob.sync('./src/**/*.js');
 
-gulp.task('build', (dist) => {
+gulp.task('build', (dest) => {
 	return gulp.src(files)
 		.pipe(babel(babelrc))
-		.pipe(gulp.dest(dist));
+		.pipe(gulp.dest(dest));
 });
+
+gulp.task('copy', (dest) => {
+	return gulp.src(files)
+		.pipe(gulp.dest(dest));
+});
+
