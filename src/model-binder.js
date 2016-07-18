@@ -17,8 +17,8 @@ let ModelBinder = {
   }
 },
 create = (file, model) => {
-  let _model = require(file).default;
-  if (!model) { _model = require(file); }
+  var _model = require(file).default;
+  if (!_model) { _model = require(file); }
   if (_model) {
     if(typeof _model === 'function'){
       let instance = new _model();
