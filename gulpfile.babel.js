@@ -2,10 +2,6 @@
 
 let gulp = require('gulp');
 let sourcemaps = require('gulp-sourcemaps');
-let browserify = require('browserify');
-let babelify = require('babelify');
-let source = require('vinyl-source-stream');
-let buffer = require('vinyl-buffer');
 let glob = require('glob');
 let babel = require('gulp-babel');
 
@@ -19,7 +15,7 @@ let files = glob.sync('./src/**/*.js');
 gulp.task('build', () => {
 	return gulp.src(files)
 		.pipe(babel(babelrc))
-		.pipe(gulp.dest('dist'));
+		.pipe(gulp.dest('../mw-model-binder/dist'));
 });
 
 gulp.task('default', ['build']);
