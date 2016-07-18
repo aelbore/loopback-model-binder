@@ -1,4 +1,3 @@
-import * as loopback from 'loopback';
 
 let singleton = Symbol(),
   _model = Symbol();
