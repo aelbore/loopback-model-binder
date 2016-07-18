@@ -5,7 +5,7 @@ import { BinderHelper } from './utils';
 import * as glob from 'glob';
 
 let ModelBinder = {
-  bind: (config) => {
+  bindTo: (config) => {
     BinderHelper.init(config, __dirname);
     let configFiles = BinderHelper.files;
     if (configFiles){
