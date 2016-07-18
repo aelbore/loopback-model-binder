@@ -16,8 +16,8 @@ export default class Model {
   }
 
   create(model){
-    if (!(Model.instance.hasOwnProperty(model))){
-      Model.instance[model] = loopback.getModel(model);
+    if (!(Model.instance.hasOwnProperty(model.modelName))){
+      Model.instance[model.modelName] = model;
     }
   }  
 }

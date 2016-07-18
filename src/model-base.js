@@ -9,7 +9,6 @@ export default class ModelBase {
   constructor(ModelName, Route){
     modelName = ModelName;
     route = Route;
-    Model.instance.create(modelName);
   }
 
   onInit(){
