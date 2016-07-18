@@ -1,6 +1,6 @@
 /// <reference path="./typings/index.d.ts" />
 
-let gulp = require('gulp');
+let gulp = require('gulp-param')(require('gulp'), process.argv);
 let sourcemaps = require('gulp-sourcemaps');
 let glob = require('glob');
 let babel = require('gulp-babel');
@@ -12,10 +12,8 @@ let babelrc = JSON.parse(readFileSync(join(__dirname, '.babelrc'), 'utf-8'));
 
 let files = glob.sync('./src/**/*.js');
 
-gulp.task('build', () => {
+gulp.task('build', (dist) => {
 	return gulp.src(files)
 		.pipe(babel(babelrc))
-		.pipe(gulp.dest('../mw-model-binder/dist'));
+		.pipe(gulp.dest(dist));
 });
-
-gulp.task('default', ['build']);
