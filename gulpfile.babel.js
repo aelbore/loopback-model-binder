@@ -1,26 +1,25 @@
 /// <reference path="./typings/index.d.ts" />
 
-import * as gulp from 'gulp';
-import * as sourcemaps from 'gulp-sourcemaps';
-import * as browserify from 'browserify';
-import * as babelify from 'babelify';
-import * as source from 'vinyl-source-stream';
-import * as buffer from 'vinyl-buffer';
+let gulp = require('gulp');
+let sourcemaps = require('gulp-sourcemaps');
+let browserify = require('browserify');
+let babelify = require('babelify');
+let source = require('vinyl-source-stream');
+let buffer = require('vinyl-buffer');
+let glob = require('glob');
+let babel = require('gulp-babel');
 
 import { join } from 'path';
 import { readFileSync } from 'fs';
 
 let babelrc = JSON.parse(readFileSync(join(__dirname, '.babelrc'), 'utf-8'));
 
+let files = glob.sync('./src/**/*.js');
+
 gulp.task('build', () => {
-    return browserify({entries: './src/index.js', debug: true})
-        .transform('babelify', babelrc)
-        .bundle()
-        .pipe(source('app.js'))
-        .pipe(buffer())
-        .pipe(sourcemaps.init())
-        .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('dist'))
+	return gulp.src(files)
+		.pipe(babel(babelrc))
+		.pipe(gulp.dest('dist'));
 });
 
 gulp.task('default', ['build']);
