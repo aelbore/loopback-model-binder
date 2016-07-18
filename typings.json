@@ -1,0 +1,15 @@
+{
+  "name": "loopback-model-binder",
+  "dependencies": {},
+  "globalDependencies": {
+    "babelify": "registry:dt/babelify#7.3.0+20160621215837",
+    "browserify": "registry:dt/browserify#12.0.1+20160317120654",
+    "glob": "registry:dt/glob#5.0.10+20160317120654",
+    "gulp": "registry:dt/gulp#3.8.0+20160316155526",
+    "gulp-babel": "registry:dt/gulp-babel#6.1.0+20160316171810",
+    "gulp-sourcemaps": "registry:dt/gulp-sourcemaps#0.0.0+20160316155526",
+    "node": "registry:dt/node#6.0.0+20160709063457",
+    "vinyl-buffer": "registry:dt/vinyl-buffer#0.0.0+20160316155526",
+    "vinyl-source-stream": "registry:dt/vinyl-source-stream#0.0.0+20160316155526"
+  }
+}
