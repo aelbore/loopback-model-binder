@@ -3,7 +3,7 @@ import { Hook } from './utils';
 
 let modelName, route;
 
-export default class ModelBase {
+export default class EntityBase {
 
   constructor(ModelName, Route){
     modelName = ModelName;

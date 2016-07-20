@@ -1,6 +1,6 @@
 /// <reference path="../typings/index.d.ts" />
 
-import { Model, ModelBase } from './index';
+import { Model, EntityBase } from './index';
 import { BinderHelper } from './utils';
 import * as glob from 'glob';
 
@@ -22,7 +22,7 @@ create = (file, model) => {
   if (_model) {
     if(typeof _model === 'function'){
       let instance = new _model();
-      if (instance instanceof ModelBase){
+      if (instance instanceof EntityBase){
         Model.instance.create(model);
         instance.onInit();  
       }

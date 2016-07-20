@@ -1,6 +1,6 @@
 import Model from './model';
-import ModelBase from './model-base';
+import EntityBase from './entity-base';
 import { ModelBinder } from './model-binder';
 import { modelBootstrap } from './model-bootstrap';
 
-export { Model, ModelBase, ModelBinder, modelBootstrap } 
+export { Model, EntityBase, ModelBinder, modelBootstrap } 
