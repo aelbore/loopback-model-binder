@@ -1,5 +1,5 @@
 import Model from './model';
-import { Hook } from './utils';
+import { Hook, RequireObject } from './utils';
 
 let modelName, route;
 
@@ -11,18 +11,31 @@ export default class EntityBase {
   }
 
   onInit(){
-    let model = Model.instance[modelName];  
-    let methods = Object.keys(route);
-    methods.forEach((method) => {
-      let methodElement = this[method];
-      if (methodElement){
-        if (typeof methodElement === 'function'){
-          model[method] = methodElement;
-          model[method]['isEnable'] = route.isEnable;
-          model.remoteMethod(method, route[method]);
-          Hook(model, this, method);
+    let routes = [];
+    if (!(route)){
+      let files = Model.instance.routes[this.constructor.name];
+      if (files){
+        files.forEach((element) => {
+          routes.push(RequireObject(element));  
+        });
+      };
+    } else {
+      routes.push(route);
+    }
+    routes.forEach((element) => {
+      let model = Model.instance[modelName];  
+      let methods = Object.keys(element);
+      methods.forEach((method) => {
+        let methodElement = this[method];
+        if (methodElement){
+          if (typeof methodElement === 'function'){
+            model[method] = methodElement;
+            model[method]['isEnable'] = element.isEnable;
+            model.remoteMethod(method, element[method]);
+            Hook(model, this, method);
+          }
         }
-      }
+      });
     });
   }
 

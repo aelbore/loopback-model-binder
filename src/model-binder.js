@@ -1,12 +1,12 @@
 /// <reference path="../typings/index.d.ts" />
 
 import { Model, EntityBase } from './index';
-import { BinderHelper } from './utils';
+import { BinderHelper, RequireObject } from './utils';
 import * as glob from 'glob';
 
 let ModelBinder = {
   bindTo: (config, model) => {
-    BinderHelper.init(config, __dirname);
+    BinderHelper.init(config);
     let configFiles = BinderHelper.files;
     if (configFiles){
       configFiles.forEach((element) => {
@@ -17,17 +17,29 @@ let ModelBinder = {
   }
 },
 create = (file, model) => {
-  var _model = require(file).default;
-  if (!_model) { _model = require(file); }
+  var _model = RequireObject(file);
   if (_model) {
     if(typeof _model === 'function'){
       let instance = new _model();
       if (instance instanceof EntityBase){
         Model.instance.create(model);
+        getRoutes(instance, file);
         instance.onInit();  
       }
     }
   }
-};
+},
+getRoutes = (instance, file) => {
+  /// TODO: it should support multiple routes in 1 file.
+  ///   So as of now 1 route should be in 1 file.
+  let fileWithOutfileName = file.substring(0, file.lastIndexOf("/"));
+  let routePaths = `${fileWithOutfileName}/*.route.js`;
+  let files = glob.sync(routePaths);
+  Model.instance.routes = {};
+  let name = instance.constructor.name;
+  if (!(Model.instance.routes.hasOwnProperty(name))){
+    Model.instance.routes[name] = files;
+  }
+}
 
 export { ModelBinder }

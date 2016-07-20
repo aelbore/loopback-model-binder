@@ -10,19 +10,16 @@ let BinderHelper = {
 
     _config.rootDir = _config.rootDir ? _config.rootDir : rootDir;
 
-    if (!config.isRoot){
-      _config.files.forEach((file) => {
-        let ignores = [];
-        file.include = path.join(_config.rootDir, file.include);
-        file.ignore.forEach((i) => {
-          ignores.push(path.join(_config.rootDir, i));
-        });
-        file.ignore = ignores;
-        BinderHelper.files.push(file);
+    _config.files.forEach((file) => {
+      let ignores = [];
+      file.include = path.join(_config.rootDir, file.include);
+      file.ignore.forEach((i) => {
+        ignores.push(path.join(_config.rootDir, i));
       });
-    } else {
-      BinderHelper.files = config.files;
-    }
+      file.ignore = ignores;
+      BinderHelper.files = [];
+      BinderHelper.files.push(file);
+    });
   },
   files: []
 },
@@ -74,6 +71,10 @@ randomId = () => {
         text += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return text;
+},
+RequireObject = (file) => {
+  let obj = require(file).default;
+  return obj ? obj : require(file);
 };
 
 export { 
@@ -81,5 +82,6 @@ export {
   Hook, 
   EnableDisableRemoteMethods, 
   GetMethodsFromModel,
-  randomId 
+  randomId,
+  RequireObject
 }
