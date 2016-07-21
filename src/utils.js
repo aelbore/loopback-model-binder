@@ -1,4 +1,5 @@
 import * as path from 'path';
+import * as glob from 'glob';
 
 let isFunction = (value) => {
   return typeof value === 'function';
@@ -75,6 +76,34 @@ randomId = () => {
 RequireObject = (file) => {
   let obj = require(file).default;
   return obj ? obj : require(file);
+},
+AddDataSourcesTo = (dsPath, dsObject) => {
+  if (dsPath){
+    let files = glob.sync(`${dsPath}/**/*datasources.json`);
+    console.log(files);
+    if (files){
+      files.forEach((file) => {
+        let dsSource = require(file);
+        if (dsSource){
+          Object.assign(dsObject, dsSource); 
+        }   
+      });
+    }
+  }
+},
+AddModelConfigTo = (modelConfigPath, modelConfigObject) => {
+  if (modelConfigPath){
+    let files = glob.sync(`${modelConfigPath}/**/*-config.json`);
+    console.log(files);
+    if (files){
+      files.forEach((file) => {
+        let modelConfig = require(file);
+        if (modelConfig){
+          Object.assign(modelConfigObject, modelConfig); 
+        }   
+      }); 
+    }   
+  }
 };
 
 export { 
@@ -83,5 +112,7 @@ export {
   EnableDisableRemoteMethods, 
   GetMethodsFromModel,
   randomId,
-  RequireObject
+  RequireObject,
+  AddDataSourcesTo,
+  AddModelConfigTo
 }
