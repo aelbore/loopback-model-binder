@@ -1,10 +1,6 @@
 import * as path from 'path';
 import * as glob from 'glob';
 
-let isFunction = (value) => {
-  return typeof value === 'function';
-};
-
 let BinderHelper = {
   init: (config, rootDir) => {
     let _config = JSON.parse(JSON.stringify(config));
@@ -104,6 +100,9 @@ AddModelConfigTo = (modelConfigPath, modelConfigObject) => {
       }); 
     }   
   }
+},
+isFunction = (value) => {
+  return typeof value === 'function';
 };
 
 export { 
@@ -114,5 +113,6 @@ export {
   randomId,
   RequireObject,
   AddDataSourcesTo,
-  AddModelConfigTo
+  AddModelConfigTo,
+  isFunction
 }
