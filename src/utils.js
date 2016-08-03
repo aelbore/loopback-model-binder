@@ -76,7 +76,6 @@ RequireObject = (file) => {
 AddDataSourcesTo = (dsPath, dsObject) => {
   if (dsPath){
     let files = glob.sync(`${dsPath}/**/*datasources.json`);
-    console.log(files);
     if (files){
       files.forEach((file) => {
         let dsSource = require(file);
