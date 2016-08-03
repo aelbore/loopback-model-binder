@@ -1,35 +1,33 @@
 import { ModelBinder } from './model-binder';
+import { dataSourceLoader } from './datasource-loader';
 import * as glob from 'glob';
 import * as path from 'path';
 
 let modelLoader = {
-  load: (app, configs) => {  
-    let directoryPath = configs.rootDir;
-    let modelName = configs.model.toLowerCase();
-
-    let datasources = glob.sync(`${directoryPath}/*datasources.json`);
-    if (datasources){
-      datasources.forEach((datasource) => {
-        let dataSources = require(datasource);
-        let sources = Object.keys(dataSources);
-        sources.forEach((source) => {
-          if (source){ app.dataSource(source, dataSources[source]); }
-        });
+  load: (app, rootDir) => {  
+    let configs = glob.sync(`${rootDir}/*-binder.config.js`);
+    if (configs){
+      configs.forEach((configSchema) => {
+        let config = require(configSchema).configs;
+        if (config){
+          let modelName = config.model.toLowerCase();
+          dataSourceLoader.load(app, rootDir);
+          let modelSchemas = glob.sync(`${rootDir}/${modelName}.json`);
+          if (modelSchemas){
+            modelSchemas.forEach((modelSchema) => {
+              let schema = require(modelSchema);
+              let model = app.loopback.createModel(schema);
+              model.on('attached', () => {
+                ModelBinder.bindTo(config, model);
+              });    
+              app.model(model, { dataSource: config.dataSource, public: true } );    
+            });
+          }
+        }  
       });
+    } else {
+      throw new Error(`configuration file for model not exist.`);
     }
-
-    let modelSchemas = glob.sync(`${directoryPath}/${modelName}.json`);
-    if (modelSchemas){
-      modelSchemas.forEach((modelSchema) => {
-        let schema = require(modelSchema);
-        let model = app.loopback.createModel(schema);
-        model.on('attached', () => {
-          ModelBinder.bindTo(configs, model);
-        });    
-        app.model(model, { dataSource: configs.dataSource, public: true } );    
-      });
-    }
-
   }
 };
 
