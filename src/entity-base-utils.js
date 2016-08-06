@@ -1,6 +1,13 @@
 import Model from './model';
 import { isFunction, RequireObject, Hook } from './utils';
 
+/*
+* Bind/Attach the Entity to Model.
+* @param {string} modelName => name of the model
+* @param {string} element => directory to search the *-datasources.json file. 
+* @param {object} entity => name of the model
+* @return {void} 
+*/
 let Bind = (modelName, element, entity) => {
   let model = Model.instance[modelName];
   let methods = Object.keys(element)
@@ -17,6 +24,13 @@ let Bind = (modelName, element, entity) => {
     }
   });  
 },
+/*
+* Bind/Attach the Entity to Model.
+* @param {string} modelName => name of the model
+* @param {string} element => directory to search the *-datasources.json file. 
+* @param {object} entity => name of the model
+* @return {void} 
+*/
 Routes = (route, entityName) => {
   let routes = [];
   if (!(route)){

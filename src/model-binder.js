@@ -48,7 +48,7 @@ globArray = (patterns, options) => {
   }
 
   patterns.forEach(function (pattern) {
-    if (pattern[0] === "!") {
+    if (pattern[0] === "!"){
       i = list.length-1;
       while( i > -1) {
         if (!minimatch(list[i], pattern)) {
@@ -56,7 +56,6 @@ globArray = (patterns, options) => {
         }
         i--;
       }
-
     }
     else {
       var newList = glob.sync(pattern, options);
