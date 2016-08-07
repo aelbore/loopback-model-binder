@@ -1,6 +1,6 @@
 {
   "name": "loopback-model-binder",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Loopback Model Binder for ES6 classes",
   "main": "gulpfile.babel.js",
   "scripts": {
