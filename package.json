@@ -4,7 +4,9 @@
   "description": "Loopback Model Binder for ES6 classes",
   "main": "gulpfile.babel.js",
   "scripts": {
-    "start": "node .",
+    "prepublish": "npm run build",
+    "build": "gulp build --dest 'dist'",
+    "start": "node .'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
