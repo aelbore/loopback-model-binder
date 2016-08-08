@@ -8,3 +8,15 @@ export { Model, EntityBase, ModelBinder, modelBootstrap, ModelBoot }
 
 export { modelLoader  } from './model-loader';
 export { dataSourceLoader } from './datasource-loader';
+
+export {
+  BinderHelper, 
+  Hook, 
+  EnableDisableRemoteMethods, 
+  GetMethodsFromModel,
+  randomId,
+  RequireObject,
+  AddDataSourcesTo,
+  AddModelConfigTo,
+  isFunction
+} from './utils';

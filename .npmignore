@@ -3,3 +3,8 @@ node_modules
 .log
 typings
 npm-debug.log
+.gitignore
+.babelrc
+README.md
+src
+.temp

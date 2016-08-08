@@ -4,3 +4,4 @@ dist
 .log
 typings
 npm-debug.log
+.temp
