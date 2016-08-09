@@ -8,3 +8,5 @@ npm-debug.log
 README.md
 src
 .temp
+gulpfile.babel.js
+.babelrc
