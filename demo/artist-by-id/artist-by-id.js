@@ -10,15 +10,18 @@ export default class Artist extends EntityBase {
     Model.instance.Artist.getArtistById(id, next);
   }
 
-  getByIdBefore(ctx, next){
+  getByIdBefore(ctx, modelInstance, next){
+    console.log(`[Artist.getById.beforeRemote]`);
     next();
   }
   
   getByIdAfter(ctx, result, next){
+    console.log(`[Artist.getById.afterRemote]`);
     next();
   }
 
   getByIdError(ctx, next){
+    console.log(`[Artist.getById.afterRemoteError]`);
     next();
   }
   
