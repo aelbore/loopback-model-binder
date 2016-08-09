@@ -1,6 +1,6 @@
 {
   "name": "loopback-model-binder",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Loopback Model Binder for ES6 classes",
   "main": "index.js",
   "scripts": {
