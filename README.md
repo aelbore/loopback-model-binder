@@ -18,6 +18,7 @@ import { modelBootstrap } from 'loopback-model-binder';
 import * as path from 'path';
 
 module.exports = (app) => {
+  // the path should be the root path of your model schema
   modelBootstrap(app, path.join(__dirname, '../models/spotify'));
 };
 ```
