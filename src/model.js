@@ -10,7 +10,6 @@ let singleton = Symbol(),
 export default class Model {
   
   constructor(){ 
-    this.routes = {};
   }
   
   

@@ -1,4 +1,5 @@
 import Model from './model';
+import Entity from './entity-collections';
 import { isFunction, RequireObject, Hook } from './utils';
 
 /*
@@ -9,6 +10,9 @@ import { isFunction, RequireObject, Hook } from './utils';
 * @return {void} 
 */
 let Bind = (modelName, element, entity) => {
+  let entityObject = Entity.collection.byEntity(entity.constructor.name);
+  modelName = (modelName) ? modelName : ((entityObject) ? entityObject.model : null);
+
   let model = Model.instance[modelName];
   let methods = Object.keys(element)
       .filter((o) => { return o !== 'isEnable' });
@@ -34,9 +38,9 @@ let Bind = (modelName, element, entity) => {
 Routes = (route, entityName) => {
   let routes = [];
   if (!(route)){
-    let files = Model.instance.routes[entityName];
-    if (files){
-      files.forEach((element) => {
+    let entity = Entity.collection.byEntity(entityName);
+    if (entity.routes){
+      entity.routes.forEach((element) => {
         routes.push(RequireObject(element));  
       });
     };
@@ -47,4 +51,3 @@ Routes = (route, entityName) => {
 };
 
 export { Bind, Routes }
-export { Hook, RequireObject, isFunction } from './utils';

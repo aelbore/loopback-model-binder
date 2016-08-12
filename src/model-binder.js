@@ -1,7 +1,7 @@
 /// <reference path="../typings/index.d.ts" />
 
-import { Model, EntityBase } from './index';
-import { BinderHelper, RequireObject } from './utils';
+import { Model, EntityBase, Entity } from './index';
+import { BinderHelper, RequireObject, globArray } from './utils';
 import * as glob from 'glob';
 
 let ModelBinder = {
@@ -23,51 +23,19 @@ create = (file, model) => {
       let instance = new _model();
       if (instance instanceof EntityBase){
         Model.instance.create(model);
-        getRoutes(instance, file);
+        addEntity(model.modelName, instance.constructor.name, file);
         instance.onInit();  
       }
     }
   }
 },
-getRoutes = (instance, file) => {
+addEntity = (modelName, entityName, file) => {
   let fileWithOutfileName = file.substring(0, file.lastIndexOf("/"));
   let files = globArray([
       `${fileWithOutfileName}/*.route.js`, 
       `${fileWithOutfileName}/*.route.json`
   ]);
-  Model.instance.routes = {};
-  let name = instance.constructor.name;
-  if (!(Model.instance.routes.hasOwnProperty(name))){
-    Model.instance.routes[name] = files;
-  }
-},
-globArray = (patterns, options) => {
-  var i, list = [];
-  if (!Array.isArray(patterns)) {
-    patterns = [patterns];
-  }
-
-  patterns.forEach(function (pattern) {
-    if (pattern[0] === "!"){
-      i = list.length-1;
-      while( i > -1) {
-        if (!minimatch(list[i], pattern)) {
-          list.splice(i,1);
-        }
-        i--;
-      }
-    }
-    else {
-      var newList = glob.sync(pattern, options);
-      newList.forEach(function(item){
-        if (list.indexOf(item)===-1) {
-          list.push(item);
-        }
-      });
-    }
-  });
-
-  return list;
-}
+  Entity.collection.add(modelName, entityName, files);
+};
 
 export { ModelBinder }

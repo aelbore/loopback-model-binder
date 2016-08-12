@@ -15,4 +15,4 @@ export {
   isFunction,
   modelLoader,
   dataSourceLoader
-} from './dist';
+} from './src';
