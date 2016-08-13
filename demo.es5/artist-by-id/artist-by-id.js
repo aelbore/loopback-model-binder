@@ -28,7 +28,7 @@ var ArtistById = (function(){
     next();
   };
 
-  return Artist;
+  return ArtistById;
 })();
 
 module.exports = ArtistById;
