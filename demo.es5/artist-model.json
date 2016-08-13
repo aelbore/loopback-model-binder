@@ -1,0 +1,8 @@
+{
+  "name": "Artist",
+  "plural": "Artists",
+  "base": "PersistedModel",
+  "http": {
+    "path": "spotify"
+  }
+}

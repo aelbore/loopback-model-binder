@@ -10,6 +10,7 @@ let modelBootstrap = (app, bootRootDir = __dirname, isEnable = false) => {
   if (bootFiles){
     bootFiles.forEach((element) => {
       let bootFile = RequireObject(element);
+      console.log(bootFile);
       if (bootFile){
         if (isFunction(bootFile)){
           let modelBoot = new bootFile(app);
