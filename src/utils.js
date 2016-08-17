@@ -1,5 +1,6 @@
 import * as path from 'path';
 import * as glob from 'glob';
+import * as fs from 'fs';
 
 let BinderHelper = {
   init: (config, rootDir) => {
@@ -102,9 +103,67 @@ AddModelConfigTo = (modelConfigPath, modelConfigObject) => {
 },
 isFunction = (value) => {
   return typeof value === 'function';
+},
+globArray = (patterns, options) => {
+  var i, list = [];
+  if (!Array.isArray(patterns)) {
+    patterns = [patterns];
+  }
+
+  patterns.forEach(function (pattern) {
+    if (pattern[0] === "!"){
+      i = list.length-1;
+      while( i > -1) {
+        if (!minimatch(list[i], pattern)) {
+          list.splice(i,1);
+        }
+        i--;
+      }
+    }
+    else {
+      var newList = glob.sync(pattern, options);
+      newList.forEach(function(item){
+        if (list.indexOf(item)===-1) {
+          list.push(item);
+        }
+      });
+    }
+  });
+
+  return list;
+},
+ObserveReadableSteam = (file) => {
+  return RxNode.fromReadableStream(fs.createReadStream(file));
+},
+ReadGlob = (file, options = null) => {
+  return glob.sync(file, options);
+},
+PathJoin = (rootDir, filePath) => {
+  return path.join(rootDir, filePath);
+},
+ReadFileSync = (rootDir, filePath) => {
+  return fs.readFileSync(path.join(rootDir, filePath), 'UTF-8');
+},
+PropertyListChanged = (sourceObj, dbObj) => {
+  let propertiesListChanged = [];
+  let properties = Object.getOwnPropertyNames(sourceObj);
+  properties.forEach((property) => {
+    if (dbObj[property] !== sourceObj[property]){
+      propertiesListChanged.push(property);
+    }
+  });  
+  return propertiesListChanged;
+},
+toSpinalCase = (str) => {
+  return str.replace(/(?!^)([A-Z])/g, ' $1')
+            .replace(/[_\s]+(?=[a-zA-Z])/g, '-').toLowerCase();
 };
 
 export { 
+  PropertyListChanged,
+  ReadFileSync,
+  PathJoin,
+  ReadGlob,
   BinderHelper, 
   Hook, 
   EnableDisableRemoteMethods, 
@@ -113,5 +172,8 @@ export {
   RequireObject,
   AddDataSourcesTo,
   AddModelConfigTo,
-  isFunction
+  isFunction,
+  globArray,
+  ObserveReadableSteam,
+  toSpinalCase
 }
