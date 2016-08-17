@@ -1,0 +1,6 @@
+[
+    { "value": "D", "text": "DIVORCED", "apivalue": "Divorced" },
+    { "value": "M", "text": "MARRIED", "apivalue": "Married" },
+    { "value": "S", "text": "SINGLE", "apivalue": "Single" },
+    { "value": "W", "text": "WIDOWED", "apivalue": "Widowed" }
+]

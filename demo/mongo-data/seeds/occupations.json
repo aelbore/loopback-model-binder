@@ -1,0 +1,182 @@
+[
+  {
+    "value": "ACTO",
+    "text": "ACTOR / ACTRESS"
+  },
+  {
+    "value": "ADMI",
+    "text": "ADMINISTRATION"
+  },
+  {
+    "value": "AIRC",
+    "text": "AIRCRAFT PILOT / CREW"
+  },
+  {
+    "value": "ARTD",
+    "text": "ART / DESIGN"
+  },
+  {
+    "value": "CATE",
+    "text": "CATERING"
+  },
+  {
+    "value": "CIVI",
+    "text": "CIVIL SVCS (NON DISCIP)"
+  },
+  {
+    "value": "CLER",
+    "text": "CLERICAL"
+  },
+  {
+    "value": "COUR",
+    "text": "COURIER SERVICES"
+  },
+  {
+    "value": "DEBT",
+    "text": "DEBT COLLECTOR"
+  },
+  {
+    "value": "DETE",
+    "text": "DETECTIVES"
+  },
+  {
+    "value": "DISC",
+    "text": "DISCIPLINARY BODY"
+  },
+  {
+    "value": "DRPV",
+    "text": "DRIVER - PRIVATE CAR"
+  },
+  {
+    "value": "TCHR",
+    "text": "EDUCATIONAL - TEACHER"
+  },
+  {
+    "value": "EDUC",
+    "text": "EDUCATIONAL / RELIGIOUS"
+  },
+  {
+    "value": "ENTE",
+    "text": "ENTERTAINMENT"
+  },
+  {
+    "value": "HAWK",
+    "text": "HAWKER"
+  },
+  {
+    "value": "HEAL",
+    "text": "HEALTH SERVICES"
+  },
+  {
+    "value": "DENT",
+    "text": "HEALTH SERVICES - DENTIST"
+  },
+  {
+    "value": "DOCT",
+    "text": "HEALTH SERVICES - DOCTOR"
+  },
+  {
+    "value": "PHAR",
+    "text": "HEALTH SERVICES - PHARMACIST"
+  },
+  {
+    "value": "NURS",
+    "text": "HEALTH SERVICES - REG NURSE"
+  },
+  {
+    "value": "HOTE",
+    "text": "HOTEL & TOURISM"
+  },
+  {
+    "value": "HOUS",
+    "text": "HOUSEWIFE"
+  },
+  {
+    "value": "JOCK",
+    "text": "JOCKEY"
+  },
+  {
+    "value": "LEGA",
+    "text": "LEGAL SERVICES"
+  },
+  {
+    "value": "LAWY",
+    "text": "LEGAL SERVICES - LAWYER"
+  },
+  {
+    "value": "MANA",
+    "text": "MANAGEMENT"
+  },
+  {
+    "value": "MANU",
+    "text": "MANUAL WORKER"
+  },
+  {
+    "value": "MERC",
+    "text": "MERCHANT"
+  },
+  {
+    "value": "MOTO",
+    "text": "MOTOR DEALER / GARAGE"
+  },
+  {
+    "value": "NEWS",
+    "text": "NEWS REPORTER"
+  },
+  {
+    "value": "PROF",
+    "text": "PROFESSIONAL"
+  },
+  {
+    "value": "ACCT",
+    "text": "PROFESSIONAL - ACCOUNTANT"
+  },
+  {
+    "value": "ACTU",
+    "text": "PROFESSIONAL - ACTUARY"
+  },
+  {
+    "value": "CFA",
+    "text": "PROFESSIONAL - CFA"
+  },
+  {
+    "value": "ENGR",
+    "text": "PROFESSIONAL - ENGINEER"
+  },
+  {
+    "value": "SPOR",
+    "text": "PROFESSIONAL SPORTSMAN"
+  },
+  {
+    "value": "RETI",
+    "text": "RETIRED"
+  },
+  {
+    "value": "SALI",
+    "text": "SALES & AGENT - INDOOR"
+  },
+  {
+    "value": "SALO",
+    "text": "SALES & AGENT - OUTDOOR"
+  },
+  {
+    "value": "SKIL",
+    "text": "SKILLED WORKER"
+  },
+  {
+    "value": "SOCI",
+    "text": "SOCIAL SERVICES"
+  },
+  {
+    "value": "STUD",
+    "text": "STUDENT"
+  },
+  {
+    "value": "TRAN",
+    "text": "TRANSPORTATION"
+  },
+  {
+    "value": "UNEM",
+    "text": "UNEMPLOYED"
+  }
+]

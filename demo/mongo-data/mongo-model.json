@@ -1,0 +1,10 @@
+{
+  "name": "Mongo",
+  "base": "PersistedModel",
+  "mongodb": {
+    "collections": ["MaritalStatus", "Occupations"]
+  },
+  "http": {
+    "path": "mongo"
+  }
+}

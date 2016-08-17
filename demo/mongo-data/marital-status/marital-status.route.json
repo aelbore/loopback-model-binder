@@ -1,0 +1,34 @@
+[
+  {
+    "getMaritalStatus": {
+      "accepts": [],
+      "http": {
+        "verb": "GET",
+        "path": "/marital-status"
+      }, 
+      "returns": {
+        "root": true
+      } 
+    },
+    "isEnable": true
+  },
+  {
+    "getMaritalStatusByValue": {
+      "accepts": [
+        { 
+          "arg": "value", 
+          "type": "string", 
+          "required": true
+        }     
+      ],
+      "http": {
+        "verb": "GET",
+        "path": "/marital-status/:value"
+      }, 
+      "returns": {
+        "root": true
+      } 
+    },
+    "isEnable": true
+  } 
+]

@@ -1,0 +1,11 @@
+{
+  "MongoData": {
+    "connector": "mongodb",
+    "debug": "true",
+    "host": "localhost",
+    "database": "sampledb",
+    "port": 27017,
+    "username": "root",
+    "password": ""
+  }
+}
