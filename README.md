@@ -10,16 +10,15 @@ npm install loopback-model-binder --save
 ```
 
 ## Steps
-* Create spotify folder in your models folder.
-* Copy all files in demo folder into spotify folder.
-* Create boot file for your spotify api.
+* Copy spotify and mongo-data folder from demo folder to your models folder
+* Create boot file for your demo api.
 ```javascript
 import { modelBootstrap } from 'loopback-model-binder';
 import * as path from 'path';
 
 module.exports = (app) => {
   // the path should be the root path of your model schema
-  modelBootstrap(app, path.join(__dirname, '../models/spotify'));
+  modelBootstrap(app, path.join(__dirname, '../models'));
 };
 ```
 * Run your strongloop app.
