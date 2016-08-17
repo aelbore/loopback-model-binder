@@ -23,8 +23,8 @@ module.exports = (app) => {
 ```
 * Run your strongloop app.
 
-### Model json file 
-When creating model json file. it should be this format [your-custom-name]-model.json, should have -model.json suffix.
+#### Model schema [you-custom-name]-model.json 
+When creating model json file, it should have -model.json suffix.
 
 * mongodb.collections is an array of your collections in mongodb database.
 * should be in PascalCase
@@ -37,6 +37,23 @@ When creating model json file. it should be this format [your-custom-name]-model
   },
   "http": {
     "path": "mongo"
+  }
+}
+```
+
+#### Datasources schema [your-custom-name]-datasources.json
+When creating datasources json file, it should have -datasources.json suffix.
+
+```json
+{
+  "MongoData": {
+    "connector": "mongodb",
+    "debug": "true",
+    "host": "localhost",
+    "database": "sampledb",
+    "port": 27017,
+    "username": "root",
+    "password": "*****"
   }
 }
 ```
