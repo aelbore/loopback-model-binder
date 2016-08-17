@@ -1,6 +1,6 @@
 import { Model, EntityBase } from 'loopback-model-binder';
 
-export default class Artist extends EntityBase {
+export default class ArtistById extends EntityBase {
  
   constructor() {
     super();
