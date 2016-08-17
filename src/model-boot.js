@@ -16,6 +16,18 @@ const IGNORE_FILES = [
     "./*-model.json"  
 ];
 
+/** configs schema
+ * let configs = {
+ *   files: [
+ *     { include: ".//**//*.js", ignore: [] }
+ *   ],
+ *   seed: {
+ *     rootDir: __dirname,
+ *     isSeed: true
+ *   }
+ * }
+ */
+
 /**
  * Boots the Model/Datasource that you create
  * @class ModelBoot
@@ -49,6 +61,8 @@ export default class ModelBoot {
   /**
    * Get or create an configs;
    * its overridable
+   * by default it will check *-binder.config.js file
+   * if not exist will create default config schema
   */
   get configs(){
     let configValues = null;
@@ -61,8 +75,13 @@ export default class ModelBoot {
         configValues = require(configSchema).configs; 
       });
     } else {
+      const SEED_ROOT_DIR = `${this[rootDir]}/seeds`;
       configValues = {
-        files: [{ include: "./**/*.js", ignore: IGNORE_FILES }]
+        files: [{ include: "./**/*.js", ignore: IGNORE_FILES }],
+        seed: {
+          rootDir: SEED_ROOT_DIR,
+          isSeed: true
+        }
       };
     }
     return configValues;

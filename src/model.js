@@ -2,7 +2,6 @@
 let singleton = Symbol(),
   _model = Symbol();
 
-
 /**
  * Model instance
  * @class Model
@@ -11,7 +10,6 @@ export default class Model {
   
   constructor(){ 
   }
-  
   
   /**
    * Object static instance for the Model
@@ -24,7 +22,6 @@ export default class Model {
     return this[singleton];
   }
 
-  
   /**
    * Initialize or create Model 
    * @param {string} model => Model object

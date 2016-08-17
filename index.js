@@ -4,6 +4,8 @@ export {
   ModelBinder, 
   modelBootstrap, 
   ModelBoot, 
+  Entity,
+  ModelSeed, 
   BinderHelper, 
   Hook, 
   EnableDisableRemoteMethods, 
@@ -14,5 +16,10 @@ export {
   AddModelConfigTo,
   isFunction,
   modelLoader,
-  dataSourceLoader
+  dataSourceLoader,
+  PropertyListChanged,
+  toSpinalCase,
+  PathJoin,
+  ReadFileSync,
+  ReadGlob
 } from './src';

@@ -1,5 +1,6 @@
 import * as path from 'path';
 import * as glob from 'glob';
+import * as fs from 'fs';
 
 let BinderHelper = {
   init: (config, rootDir) => {
@@ -130,9 +131,39 @@ globArray = (patterns, options) => {
   });
 
   return list;
+},
+ObserveReadableSteam = (file) => {
+  return RxNode.fromReadableStream(fs.createReadStream(file));
+},
+ReadGlob = (file, options = null) => {
+  return glob.sync(file, options);
+},
+PathJoin = (rootDir, filePath) => {
+  return path.join(rootDir, filePath);
+},
+ReadFileSync = (rootDir, filePath) => {
+  return fs.readFileSync(path.join(rootDir, filePath), 'UTF-8');
+},
+PropertyListChanged = (sourceObj, dbObj) => {
+  let propertiesListChanged = [];
+  let properties = Object.getOwnPropertyNames(sourceObj);
+  properties.forEach((property) => {
+    if (dbObj[property] !== sourceObj[property]){
+      propertiesListChanged.push(property);
+    }
+  });  
+  return propertiesListChanged;
+},
+toSpinalCase = (str) => {
+  return str.replace(/(?!^)([A-Z])/g, ' $1')
+            .replace(/[_\s]+(?=[a-zA-Z])/g, '-').toLowerCase();
 };
 
 export { 
+  PropertyListChanged,
+  ReadFileSync,
+  PathJoin,
+  ReadGlob,
   BinderHelper, 
   Hook, 
   EnableDisableRemoteMethods, 
@@ -142,5 +173,7 @@ export {
   AddDataSourcesTo,
   AddModelConfigTo,
   isFunction,
-  globArray
+  globArray,
+  ObserveReadableSteam,
+  toSpinalCase
 }

@@ -1,7 +1,7 @@
 /// <reference path="../typings/index.d.ts" />
 
 import { Model, EntityBase, Entity } from './index';
-import { BinderHelper, RequireObject, globArray } from './utils';
+import { BinderHelper, RequireObject, globArray, isFunction } from './utils';
 import * as glob from 'glob';
 
 let ModelBinder = {
@@ -19,7 +19,7 @@ let ModelBinder = {
 create = (file, model) => {
   var _model = RequireObject(file);
   if (_model) {
-    if(typeof _model === 'function'){
+    if(isFunction(_model)){
       let instance = new _model();
       if (instance instanceof EntityBase){
         Model.instance.create(model);
