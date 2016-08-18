@@ -1,5 +1,9 @@
 # loopback-model-bider
-Loopback Model Binder for ES6 classes
+Loopback Model Binder for ES6
+
+* Helps to write clean code.
+* Developer can focus on application logic.
+* Can use ES5 or ES6 code.
 
 ## Usage
 
