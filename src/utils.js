@@ -4,7 +4,7 @@ import * as fs from 'fs';
 
 let BinderHelper = {
   init: (config, rootDir) => {
-    let _config = JSON.parse(JSON.stringify(config));
+    let _config = Object.assign({}, config);
 
     _config.rootDir = _config.rootDir ? _config.rootDir : rootDir;
 

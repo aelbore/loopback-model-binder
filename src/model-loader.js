@@ -27,7 +27,44 @@ let modelLoader = {
         } 
       });
     }
+  },
+  extends: (app, dataSource, configs) => {
+    let schema = getSchema(configs.rootDir);
+    if (schema){
+      let connector = getDSConnector(configs.rootDir, dataSource);
+      if (connector){
+        let _loader = RequireObject(`./model-loader-extends-${connector}`);
+        let loader = new _loader(app, schema, dataSource, configs);
+        loader.onInit();
+      }
+    }
   }
+},
+getSchema = (rootDir) => {
+  let schema;
+  let modelSchemas = ReadGlob(`${rootDir}/*-model.json`);
+  if (modelSchemas){
+    if (modelSchemas.length > 1){
+      throw new Error(`Only one (1) model file, should be in ${rootDir}`);  
+    }
+    schema = require(modelSchemas[0]);
+  }   
+  return schema;
+},
+getDSConnector = (rootDir, dsKey) => {
+  let connector;
+  let datasources = ReadGlob(`${rootDir}/*-datasources.json`);  
+  if (datasources){
+    if (datasources.length > 1){
+      throw new Error(`Only one (1) datasources file, should be in ${dsDirPath}`);
+    }
+    let dataSources = require(datasources[0]);
+    if (dataSources){
+      let ds = dataSources[dsKey];
+      connector = (ds) ? ds.connector : null;    
+    }
+  } 
+  return connector;
 };
 
 export { modelLoader }
