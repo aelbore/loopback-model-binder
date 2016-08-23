@@ -6,6 +6,13 @@ import * as glob from 'glob';
 
 let app = Symbol();
 let rootDir = Symbol();
+let extend = (app, dataSources, configs) => {
+  if (dataSources.length > 1){
+    for(let i = 1; i < dataSources.length; i++){
+      modelLoader.extends(app, dataSources[i], configs);
+    }
+  }
+};
 
 const IGNORE_FILES = [
     "./**/*.route.js",
@@ -49,12 +56,13 @@ export default class ModelBoot {
    */
   onInit(){
     dataSourceLoader.load(this[app], this[rootDir], 
-      (dataSource) => {
+      (dataSources) => {
         let localConfigs = Object.assign({}, this.configs);
-        localConfigs.dataSource = dataSource;
-        localConfigs.rootDir = this[rootDir];
+        localConfigs.dataSource = dataSources[0];
+        localConfigs.rootDir = this[rootDir];  
 
         modelLoader.load(this[app], localConfigs);
+        extend(this[app], dataSources, localConfigs);
       });
   }
 

@@ -18,17 +18,18 @@ let dataSourceLoader = {
         let dataSources = require(datasource);
         let sources = Object.keys(dataSources);
         if (sources){
-          if (sources.length > 1){
-            throw new Error(`should contain only one (1) datasource in ${datasource} file.`);
-          }
+          let newDataSources = new Array();
           sources.forEach((source) => {
             if (source){ 
               app.dataSource(source, dataSources[source]); 
-              if (modelLoaderCallback && isFunction(modelLoaderCallback)){
-                modelLoaderCallback(source);
+              if (app.dataSources[source]){
+                newDataSources.push(source);
               }
             }
           });
+          if (modelLoaderCallback && isFunction(modelLoaderCallback)){
+            modelLoaderCallback(newDataSources);
+          }
         }
       });
     }
