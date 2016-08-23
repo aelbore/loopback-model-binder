@@ -22,4 +22,4 @@ export {
   PathJoin,
   ReadFileSync,
   ReadGlob
-} from './src';
+} from './dist';
