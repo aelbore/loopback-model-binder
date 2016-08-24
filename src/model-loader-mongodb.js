@@ -2,7 +2,7 @@
 
 import Model from './model';
 import { SeedData } from './model-loader-utils';
-import { toSpinalCase } from './utils';
+import { toSpinalCase, randomId } from './utils';
 import { ModelBinder } from './model-binder';
 import * as events from 'events';
 
@@ -36,8 +36,10 @@ export default class ModelLoaderMongodb {
    * @returns
    */
   createNewSchema(schemaCopy, collection){
+    let modelName = `${collection}_${randomId()}`;
     let newCopy = JSON.parse(JSON.stringify(schemaCopy));       
-    newCopy.name = collection;
+    newCopy.name = modelName;
+    newCopy.plural = `${modelName}s`;
     newCopy.http.path = toSpinalCase(collection);
     newCopy.mongodb = { collection: collection.toLowerCase() };
     return newCopy;
@@ -65,8 +67,8 @@ export default class ModelLoaderMongodb {
         let newCopy = this.createNewSchema(schemaCopy, collection);
         let newModel = this[app].loopback.createModel(newCopy);
         newModel.on('attached', () => {
-          SeedData(Configs.seed, newModel, dataSource);
-          Model.instance[model.modelName][newModel.modelName] = newModel;
+          SeedData(Configs.seed, newModel, collection, dataSource);
+          Model.instance[model.modelName][collection] = newModel;
         });  
         attached(this[app], dataSource, newModel, false);
       }); 

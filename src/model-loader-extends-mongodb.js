@@ -1,7 +1,7 @@
 /// <reference path="../typings/index.d.ts" />
 
 import Model from './model';
-import { toSpinalCase } from './utils';
+import { toSpinalCase, randomId } from './utils';
 import * as events from 'events';
 
 let app = Symbol();
@@ -22,12 +22,10 @@ export default class ModelLoaderExtendsMongodb {
   }
 
   createNewSchema(schemaCopy, collection){
-    if (this[app].models[collection]){
-      throw new Error(`Model ${collection} is already exist.`);
-    }
+    let modelName = `${collection}_${randomId()}`;
     let newCopy = JSON.parse(JSON.stringify(schemaCopy));       
-    newCopy.name = collection;
-    newCopy.plural = collection;
+    newCopy.name = modelName;
+    newCopy.plural = `${modelName}s`;
     newCopy.http.path = toSpinalCase(collection);
     newCopy.mongodb = { collection: collection.toLowerCase() };
     return newCopy;
@@ -47,8 +45,8 @@ export default class ModelLoaderExtendsMongodb {
           let newCopy = this.createNewSchema(newSchema, collection);
           let newModel = this[app].loopback.createModel(newCopy);
           newModel.on('attached', () => {
-            console.log(`Model ${newSchema.name} extends ${newModel.modelName}.`);
-            Model.instance[newSchema.name][newModel.modelName] = newModel;
+            console.log(`Model ${newSchema.name} extends ${collection}.`);
+            Model.instance[newSchema.name][collection] = newModel;
           });  
           this[app].model(newModel, { dataSource: (ds) ? ds : 'db',  public: false }); 
         });
