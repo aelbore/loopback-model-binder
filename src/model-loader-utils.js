@@ -4,9 +4,9 @@ import { toSpinalCase, ReadGlob, PathJoin, RequireObject } from './utils';
 import ModelSeed from './model-seed';
 import * as async from 'async';
 
-let SeedData = (seed, model, dataSource) => {
+let SeedData = (seed, model, collection, dataSource) => {
   if (seed.isSeed){
-    let files = ReadGlob(PathJoin(seed.rootDir, `./${toSpinalCase(model.modelName)}.js`));
+    let files = ReadGlob(PathJoin(seed.rootDir, `./${toSpinalCase(collection)}.js`));
     if (files){
       async.each(files, 
         (file) => {

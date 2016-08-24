@@ -2,6 +2,7 @@
 
 let entities = Symbol();
 let singleton = Symbol();
+let _currentModel = Symbol();
 
 export default class Entity {
   constructor() {
@@ -16,6 +17,7 @@ export default class Entity {
   }
 
   add(model, entity, routes){
+    this[_currentModel] = model;
     this[entities].push({ model: model, entity: entity, routes: routes });
   }
 
@@ -25,7 +27,7 @@ export default class Entity {
 
   byEntity(entityName) {
     let values = this.entities.filter((o) => {
-      return o.entity === entityName;
+      return (o.entity === entityName && o.model === this[_currentModel]);
     });
     return (values) ? values[0] : null;
   }
