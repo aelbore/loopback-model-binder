@@ -1,0 +1,13 @@
+{
+  "name": "RestMongo",
+  "plural": "RestMongos",
+  "base": "PersistedModel",
+  "http": {
+    "path": "rest-mongo"
+  },
+  "extends": {
+    "RestMongoData": {
+      "collections": ["SeveralArtist"]
+    }
+  }
+}

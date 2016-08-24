@@ -1,0 +1,32 @@
+{
+  "demoArtistRest": {
+    "connector": "rest",
+    "debug": "true",
+    "options": {
+      "headers": {
+        "content-type": "application/json"
+      },
+      "strictSSL": false
+    },
+    "operations": [
+      { 
+        "template": {
+          "method": "GET",
+          "url": "https://api.spotify.com/v1/artists?ids={ids}"
+        },
+        "functions": {
+          "getSpotifySeveralArtists": ["ids"]
+        }
+      }
+    ]
+  },
+  "RestMongoData": {
+    "connector": "mongodb",
+    "debug": "true",
+    "host": "localhost",
+    "database": "restmongo",
+    "port": 27017,
+    "username": "root",
+    "password": ""
+  } 
+}

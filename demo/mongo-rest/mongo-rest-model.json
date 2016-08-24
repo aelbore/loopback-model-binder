@@ -1,0 +1,11 @@
+{
+  "name": "MongoRest",
+  "plural": "MongoRests",
+  "base": "PersistedModel",
+  "mongodb": {
+    "collections": ["SeveralArtist"]
+  },
+  "http": {
+    "path": "mongo-rest"
+  }
+}
