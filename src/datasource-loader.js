@@ -1,5 +1,9 @@
-import { isFunction } from './utils';
+/// <reference path="../typings/index.d.ts" />
+
+import { isFunction, GetModelSchema, toSpinalCase, ReadGlob, PathJoin } from './utils';
 import * as glob from 'glob';
+import * as fs from 'fs';
+import * as Rx from 'rx';
 
 let dataSourceLoader = {
   /**
@@ -8,31 +12,68 @@ let dataSourceLoader = {
   * @param {dsDirPath} => directory to search the *-datasources.json file. 
   * @return {void} 
   */
-  load: (app, dsDirPath, modelLoaderCallback) => {
+  load: (app, dsDirPath) => {
+    let loadDataSource;
     let datasources = glob.sync(`${dsDirPath}/*-datasources.json`);
     if (datasources){
       if (datasources.length > 1){
         throw new Error(`Only one (1) datasources file, should be in ${dsDirPath}`);
-      }     
-      datasources.forEach((datasource) => {
-        let dataSources = require(datasource);
-        let sources = Object.keys(dataSources);
-        if (sources){
-          let newDataSources = new Array();
-          sources.forEach((source) => {
-            if (source){ 
-              app.dataSource(source, dataSources[source]); 
-              if (app.dataSources[source]){
-                newDataSources.push(source);
-              }
-            }
-          });
-          if (modelLoaderCallback && isFunction(modelLoaderCallback)){
-            modelLoaderCallback(newDataSources);
-          }
-        }
-      });
+      }   
+      loadDataSource = Rx.Observable.from(datasources)
+        .flatMap((dataSource) => {
+          return getDataSourceKeys(dataSource);
+        }).flatMap((value) => {
+          return attachDataSource(app, value);
+        });
     }
+    return loadDataSource;
+  }
+},
+getDataSourceKeys = (dataSource) => {
+  return Rx.Observable.create((observer) => {
+    let ds = require(dataSource);
+    let dsKeys = Object.keys(ds);
+    observer.onNext({ dsKeys: dsKeys, dataSource: ds });
+    observer.onCompleted();
+  });    
+},
+attachDataSource = (app, value) => {
+  let length = value.dsKeys.length;
+  let newDataSources = [];
+  return Rx.Observable.create((observer) => {
+    for (let i = 0; i < length; i++){
+      let dsKey = value.dsKeys[i];
+      app.dataSource(dsKey, value.dataSource[dsKey]);
+      if (app.dataSources[dsKey]){
+        newDataSources.push(dsKey);
+      }
+    }
+    observer.onNext(newDataSources);
+    observer.onCompleted();
+  });
+},
+loadMainDataSource = (app, dsDirPath, modelLoaderCallback) => {
+  let modelName = toSpinalCase(GetModelSchema(dsDirPath).name);
+  let pathJoin = PathJoin(dsDirPath, `./${modelName}-datasources.json`);
+  if (fs.existsSync(pathJoin)) {
+    let dataSources = ReadGlob(pathJoin);
+    if (dataSources){
+      let dataSource = require(dataSources[0]);
+      let dsKeys = Object.keys(dataSource);
+      if (dsKeys.length > 1){
+        throw new Error(`Should only (1) dataSource in ${pathJoin}`);
+      }
+      let dskey = dsKeys[0], newDataSources = [];
+      app.dataSource(source, dataSource[dskey]); 
+      if (app.dataSources[dskey]){
+        newDataSources.push(dskey);
+      }
+      if (modelLoaderCallback && isFunction(modelLoaderCallback)){
+        modelLoaderCallback(newDataSources);
+      }
+    }
+  } else {
+    throw new Error(`Should have model datasource, Format: <your-model-name>-datasources.json`);
   }
 };
 

@@ -1,6 +1,7 @@
 import * as path from 'path';
 import * as glob from 'glob';
 import * as fs from 'fs';
+import { GetModelSchema } from './model-utils';
 
 let BinderHelper = {
   init: (config, rootDir) => {
@@ -175,5 +176,6 @@ export {
   isFunction,
   globArray,
   ObserveReadableSteam,
-  toSpinalCase
+  toSpinalCase,
+  GetModelSchema
 }

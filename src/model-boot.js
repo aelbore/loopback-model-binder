@@ -3,6 +3,7 @@
 import { modelLoader } from './model-loader';
 import { dataSourceLoader } from './datasource-loader';
 import * as glob from 'glob';
+import * as Rx from 'rx';
 
 let app = Symbol();
 let rootDir = Symbol();
@@ -55,14 +56,15 @@ export default class ModelBoot {
    * Initialize the datasource and model
    */
   onInit(){
-    dataSourceLoader.load(this[app], this[rootDir], 
-      (dataSources) => {
+    dataSourceLoader
+      .load(this[app], this[rootDir])
+      .subscribe((dataSources) => {
         let localConfigs = Object.assign({}, this.configs);
         localConfigs.dataSource = dataSources[0];
         localConfigs.rootDir = this[rootDir];  
 
         modelLoader.load(this[app], localConfigs);
-        extend(this[app], dataSources, localConfigs);
+        extend(this[app], dataSources, localConfigs);       
       });
   }
 
