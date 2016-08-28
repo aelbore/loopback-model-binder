@@ -1,6 +1,6 @@
 /// <reference path="../typings/index.d.ts" />
 
-import { toSpinalCase, ReadGlob, PathJoin, RequireObject } from './utils';
+import { toSpinalCase, ReadGlob, PathJoin, RequireObject, isFunction } from './utils';
 import ModelSeed from './model-seed';
 import * as async from 'async';
 
@@ -11,7 +11,7 @@ let SeedData = (seed, model, collection, dataSource) => {
       async.each(files, 
         (file) => {
           let seed = RequireObject(file);
-          if (seed && (typeof seed === 'function')){ 
+          if (seed && isFunction(seed)){ 
             let seedObject = new seed(model, dataSource);
             if (seedObject instanceof ModelSeed){
               seedObject.execute(); 

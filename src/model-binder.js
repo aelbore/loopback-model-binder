@@ -1,8 +1,8 @@
 /// <reference path="../typings/index.d.ts" />
 
 import { Model, EntityBase, Entity } from './index';
-import { BinderHelper, RequireObject, globArray, isFunction } from './utils';
-import * as glob from 'glob';
+import { BinderHelper, RequireObject, globArray, isFunction, ReadGlob } from './utils';
+import * as Rx from 'rx';
 
 let ModelBinder = {
   bindTo: (config, model) => {
@@ -10,7 +10,7 @@ let ModelBinder = {
     let configFiles = BinderHelper.files;
     if (configFiles){
       configFiles.forEach((element) => {
-        let files = glob.sync(element.include, { dot: true, ignore: element.ignore });
+        let files = ReadGlob(element.include, { dot: true, ignore: element.ignore });
         files.forEach(file => create(file, model));
       });
     }

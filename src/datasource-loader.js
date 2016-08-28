@@ -1,8 +1,6 @@
 /// <reference path="../typings/index.d.ts" />
 
 import { isFunction, GetModelSchema, toSpinalCase, ReadGlob, PathJoin } from './utils';
-import * as glob from 'glob';
-import * as fs from 'fs';
 import * as Rx from 'rx';
 
 let dataSourceLoader = {
@@ -10,11 +8,11 @@ let dataSourceLoader = {
   * Load Datasources or attach to strongloop app.
   * @param {app} => strongloop app 
   * @param {dsDirPath} => directory to search the *-datasources.json file. 
-  * @return {void} 
+  * @return {Observable} 
   */
   load: (app, dsDirPath) => {
     let loadDataSource;
-    let datasources = glob.sync(`${dsDirPath}/*-datasources.json`);
+    let datasources = ReadGlob(`${dsDirPath}/*-datasources.json`);
     if (datasources){
       if (datasources.length > 1){
         throw new Error(`Only one (1) datasources file, should be in ${dsDirPath}`);
@@ -48,7 +46,7 @@ attachDataSource = (app, value) => {
         newDataSources.push(dsKey);
       }
     }
-    observer.onNext(newDataSources);
+    observer.onNext(newDataSources); 
     observer.onCompleted();
   });
 },

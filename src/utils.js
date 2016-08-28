@@ -1,7 +1,6 @@
 import * as path from 'path';
 import * as glob from 'glob';
 import * as fs from 'fs';
-import { GetModelSchema } from './model-utils';
 
 let BinderHelper = {
   init: (config, rootDir) => {
@@ -75,35 +74,8 @@ RequireObject = (file) => {
   let obj = require(file).default;
   return obj ? obj : require(file);
 },
-AddDataSourcesTo = (dsPath, dsObject) => {
-  if (dsPath){
-    let files = glob.sync(`${dsPath}/**/*datasources.json`);
-    if (files){
-      files.forEach((file) => {
-        let dsSource = require(file);
-        if (dsSource){
-          Object.assign(dsObject, dsSource); 
-        }   
-      });
-    }
-  }
-},
-AddModelConfigTo = (modelConfigPath, modelConfigObject) => {
-  if (modelConfigPath){
-    let files = glob.sync(`${modelConfigPath}/**/*-config.json`);
-    console.log(files);
-    if (files){
-      files.forEach((file) => {
-        let modelConfig = require(file);
-        if (modelConfig){
-          Object.assign(modelConfigObject, modelConfig); 
-        }   
-      }); 
-    }   
-  }
-},
 isFunction = (value) => {
-  return typeof value === 'function';
+  return (typeof value === 'function');
 },
 globArray = (patterns, options) => {
   var i, list = [];
@@ -133,9 +105,6 @@ globArray = (patterns, options) => {
 
   return list;
 },
-ObserveReadableSteam = (file) => {
-  return RxNode.fromReadableStream(fs.createReadStream(file));
-},
 ReadGlob = (file, options = null) => {
   return glob.sync(file, options);
 },
@@ -158,7 +127,33 @@ PropertyListChanged = (sourceObj, dbObj) => {
 toSpinalCase = (str) => {
   return str.replace(/(?!^)([A-Z])/g, ' $1')
             .replace(/[_\s]+(?=[a-zA-Z])/g, '-').toLowerCase();
-};
+},
+GetModelSchema = (rootDir) => {
+  let schema;
+  let modelSchemas = ReadGlob(`${rootDir}/*-model.json`);
+  if (modelSchemas){
+    if (modelSchemas.length > 1){
+      throw new Error(`Only one (1) model file, should be in ${rootDir}`);  
+    }
+    schema = require(modelSchemas[0]);
+  }   
+  return schema;
+},
+GetDSConnector = (rootDir, dsKey) => {
+  let connector;
+  let datasources = ReadGlob(`${rootDir}/*-datasources.json`);  
+  if (datasources){
+    if (datasources.length > 1){
+      throw new Error(`Only one (1) datasources file, should be in ${dsDirPath}`);
+    }
+    let dataSources = require(datasources[0]);
+    if (dataSources){
+      let ds = dataSources[dsKey];
+      connector = (ds) ? ds.connector : null;    
+    }
+  } 
+  return connector;
+};;
 
 export { 
   PropertyListChanged,
@@ -171,11 +166,9 @@ export {
   GetMethodsFromModel,
   randomId,
   RequireObject,
-  AddDataSourcesTo,
-  AddModelConfigTo,
   isFunction,
   globArray,
-  ObserveReadableSteam,
   toSpinalCase,
-  GetModelSchema
+  GetModelSchema,
+  GetDSConnector
 }
