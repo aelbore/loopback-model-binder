@@ -1,6 +1,6 @@
 /// <reference path="../typings/index.d.ts" />
 
-import { isFunction, GetModelSchema, toSpinalCase, ReadGlob, PathJoin } from './utils';
+import { isFunction, GetModelSchema, toSpinalCase, ReadGlob, PathJoin, BaseName, RequireObject } from './utils';
 import * as Rx from 'rx';
 
 let dataSourceLoader = {
@@ -13,66 +13,49 @@ let dataSourceLoader = {
   load: (app, dsDirPath) => {
     let loadDataSource;
     let datasources = ReadGlob(`${dsDirPath}/*-datasources.json`);
-    if (datasources){
-      if (datasources.length > 1){
-        throw new Error(`Only one (1) datasources file, should be in ${dsDirPath}`);
-      }   
-      loadDataSource = Rx.Observable.from(datasources)
-        .flatMap((dataSource) => {
-          return getDataSourceKeys(dataSource);
-        }).flatMap((value) => {
-          return attachDataSource(app, value);
-        });
+    if (datasources){   
+      loadDataSource = DataSource(app, dsDirPath, datasources);
     }
     return loadDataSource;
   }
 },
-getDataSourceKeys = (dataSource) => {
-  return Rx.Observable.create((observer) => {
-    let ds = require(dataSource);
-    let dsKeys = Object.keys(ds);
-    observer.onNext({ dsKeys: dsKeys, dataSource: ds });
-    observer.onCompleted();
-  });    
-},
-attachDataSource = (app, value) => {
-  let length = value.dsKeys.length;
-  let newDataSources = [];
-  return Rx.Observable.create((observer) => {
-    for (let i = 0; i < length; i++){
-      let dsKey = value.dsKeys[i];
-      app.dataSource(dsKey, value.dataSource[dsKey]);
-      if (app.dataSources[dsKey]){
-        newDataSources.push(dsKey);
-      }
-    }
-    observer.onNext(newDataSources); 
-    observer.onCompleted();
-  });
-},
-loadMainDataSource = (app, dsDirPath, modelLoaderCallback) => {
+DataSource = (app, dsDirPath, dataSources) => {
   let modelName = toSpinalCase(GetModelSchema(dsDirPath).name);
-  let pathJoin = PathJoin(dsDirPath, `./${modelName}-datasources.json`);
-  if (fs.existsSync(pathJoin)) {
-    let dataSources = ReadGlob(pathJoin);
-    if (dataSources){
-      let dataSource = require(dataSources[0]);
-      let dsKeys = Object.keys(dataSource);
-      if (dsKeys.length > 1){
-        throw new Error(`Should only (1) dataSource in ${pathJoin}`);
-      }
-      let dskey = dsKeys[0], newDataSources = [];
-      app.dataSource(source, dataSource[dskey]); 
-      if (app.dataSources[dskey]){
-        newDataSources.push(dskey);
-      }
-      if (modelLoaderCallback && isFunction(modelLoaderCallback)){
-        modelLoaderCallback(newDataSources);
-      }
-    }
-  } else {
-    throw new Error(`Should have model datasource, Format: <your-model-name>-datasources.json`);
-  }
+  let fileName = `${modelName}-datasources.json`;
+  let ds = getParentDataSource(fileName, dataSources);
+  let newDataSources = [];
+
+  return Rx.Observable.from(dataSources)
+    .flatMap((dataSource) => {
+      return Rx.Observable.create((observer) => {
+        if (dataSources.length > 1 && !(ds)){
+          let error = new Error(`Should have ${fileName} on ${dsDirPath} directory for multiple dataSources.`);
+          observer.onError(error);
+        } 
+        let source = RequireObject(dataSource);
+        let dsKeys = Object.keys(source);
+        if (ds && (dataSources.length > 1) && (dsKeys && dsKeys.length > 1)){
+          let _error = new Error(`File ${ds} should have only one(1) dataSource.`);
+          observer.onError(_error);
+        } 
+        dsKeys.forEach((dsKey) => {
+          app.dataSource(dsKey, source[dsKey]);
+          if (app.dataSources[dsKey]){
+            newDataSources.push(dsKey);
+          }
+        });
+        if ((dataSources.indexOf(dataSource) + 1) === dataSources.length){
+          observer.onNext(newDataSources);
+          observer.onCompleted();
+        }                
+      });
+    });
+},
+getParentDataSource = (fileName, dataSources) => {
+  let sources = dataSources.filter(ds => {
+    return ((BaseName(ds) === fileName));
+  });
+  return (sources) ? sources[0] : null;
 };
 
 export { dataSourceLoader }

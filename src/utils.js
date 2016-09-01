@@ -140,20 +140,23 @@ GetModelSchema = (rootDir) => {
   return schema;
 },
 GetDSConnector = (rootDir, dsKey) => {
-  let connector;
+  let connector, ds;
   let datasources = ReadGlob(`${rootDir}/*-datasources.json`);  
   if (datasources){
-    if (datasources.length > 1){
-      throw new Error(`Only one (1) datasources file, should be in ${dsDirPath}`);
-    }
-    let dataSources = require(datasources[0]);
-    if (dataSources){
-      let ds = dataSources[dsKey];
-      connector = (ds) ? ds.connector : null;    
+    let dataSource;
+    for(let i = 0; i < datasources.length; i++){
+      let dataSource = require(datasources[i]);
+      if (dataSource && dataSource[dsKey]){
+        ds = dataSource[dsKey];
+        break;
+      }
     }
   } 
-  return connector;
-};;
+  return connector = (ds) ? ds.connector : null;;
+},
+BaseName = (filePath) => {
+  return path.basename(filePath);  
+};
 
 export { 
   PropertyListChanged,
@@ -170,5 +173,6 @@ export {
   globArray,
   toSpinalCase,
   GetModelSchema,
-  GetDSConnector
+  GetDSConnector,
+  BaseName
 }

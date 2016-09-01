@@ -26,6 +26,8 @@ onInitBootFile = (app, bootFile) => {
           .subscribe((modelName) => { 
             observer.onNext(modelName);
             observer.onCompleted();               
+          }, (error) => {
+            observer.onError(error);
           });
       }
     }         
