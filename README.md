@@ -14,7 +14,7 @@ npm install loopback-model-binder --save
 ```
 
 ## Steps
-* Copy spotify and mongo-data folder from demo folder to your models folder
+* Copy all folders from demo folder to your models folder
 * Create boot file for your demo api.
 ```javascript
 import { modelBootstrap } from 'loopback-model-binder';
