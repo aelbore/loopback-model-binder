@@ -172,4 +172,4 @@ import { modelBootstrap, ModelBoot, EntityBase, Model, ModelSeed } 'loopback-mod
     * `filter` {Object} check if data is exist
     * `options` {Object} default null
       * `modelName` {String} name of the Model
-      * `length {number} length of the data array
+      * `length` {number} length of the data array
