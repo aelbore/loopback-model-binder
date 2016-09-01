@@ -141,6 +141,7 @@ Please see in folder demo/mongo-data/mongo-boot.js
   }
 ```
 
+#### Function or Class 
 ```javascript
 import { modelBootstrap, ModelBoot, EntityBase, Model, ModelSeed } 'loopback-model-binder';
 ```
@@ -152,3 +153,12 @@ import { modelBootstrap, ModelBoot, EntityBase, Model, ModelSeed } 'loopback-mod
 
 ### ModelBoot 
   * Base class to create custom boot file. Please see 
+  
+### EntityBase
+  * Base class to create entity/functionality
+
+### Model
+  * `Model.instance.[YourModel]` - you access the Loopback Model functionalities
+  
+### ModelSeed
+  * Base class to create Seed data in MongoDB
