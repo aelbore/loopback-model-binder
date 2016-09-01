@@ -141,4 +141,14 @@ Please see in folder demo/mongo-data/mongo-boot.js
   }
 ```
 
+```javascript
+import { modelBootstrap, ModelBoot, EntityBase, Model, ModelSeed } 'loopback-model-binder';
+```
 
+### modelBootstrap(app, bootRootDir, isEnable)
+  * `app` `{Object}` strongloop/loopback app object.
+  * `bootRootDir` `{String}` root Directory of your custom boot file.
+  * `isEnable` `{Boolean}` Enable or Disable remoteMethods by default = false
+
+### ModelBoot 
+  * Base class to create custom boot file. Please see 
