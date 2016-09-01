@@ -141,7 +141,7 @@ Please see in folder demo/mongo-data/mongo-boot.js
   }
 ```
 
-#### Function or Class 
+### Function or Class 
 ```javascript
 import { modelBootstrap, ModelBoot, EntityBase, Model, ModelSeed } 'loopback-model-binder';
 ```
@@ -152,13 +152,24 @@ import { modelBootstrap, ModelBoot, EntityBase, Model, ModelSeed } 'loopback-mod
   * `isEnable` `{Boolean}` Enable or Disable remoteMethods by default = false
 
 ### ModelBoot 
-  * Base class to create custom boot file. Please see 
+  * Base class to create custom boot file. Please see
+  * `onInit` {Observable} initialize the datasources and Model
+  * `configs` {Object} configurations of model binder  
   
 ### EntityBase
   * Base class to create entity/functionality
+  * `onInit` {void} Attach custom functionalities to Model from your entity.
 
 ### Model
-  * `Model.instance.[YourModel]` - you access the Loopback Model functionalities
+  * `Model.instance.create` {void} create a model
+  * `Model.instance.[YourModel]` {Object} you access the Loopback Model functionalities
   
 ### ModelSeed
   * Base class to create Seed data in MongoDB
+  * `execute` {void} execute the seeding, must be implement in the child class.
+  * `migrate` {void} migrate each object from array data.
+    * `data` {Object} on each array.
+    * `filter` {Object} check if data is exist
+    * `options` {Object} default null
+      * `modelName` {String} name of the Model
+      * `length {number} length of the data array
