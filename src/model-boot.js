@@ -1,27 +1,12 @@
 /// <reference path="../typings/index.d.ts" />
 
-import { modelLoader } from './model-loader';
 import { dataSourceLoader } from './datasource-loader';
-import * as glob from 'glob';
+import { modelBootUtils, IGNORE_FILES } from './model-boot-utils';
+import { ReadGlob } from './utils';
+import * as Rx from 'rx';
 
 let app = Symbol();
 let rootDir = Symbol();
-let extend = (app, dataSources, configs) => {
-  if (dataSources.length > 1){
-    for(let i = 1; i < dataSources.length; i++){
-      modelLoader.extends(app, dataSources[i], configs);
-    }
-  }
-};
-
-const IGNORE_FILES = [
-    "./**/*.route.js",
-    "./index.js",
-    "./*-binder.config.js",
-    "./*-boot.js",
-    "./*-datasources.json",
-    "./*-model.json"  
-];
 
 /** configs schema
  * let configs = {
@@ -55,14 +40,11 @@ export default class ModelBoot {
    * Initialize the datasource and model
    */
   onInit(){
-    dataSourceLoader.load(this[app], this[rootDir], 
-      (dataSources) => {
-        let localConfigs = Object.assign({}, this.configs);
-        localConfigs.dataSource = dataSources[0];
-        localConfigs.rootDir = this[rootDir];  
-
-        modelLoader.load(this[app], localConfigs);
-        extend(this[app], dataSources, localConfigs);
+    return dataSourceLoader
+      .load(this[app], this[rootDir])
+      .flatMap((dataSources) => {
+        return modelBootUtils
+          .loader(this[app], this[rootDir], dataSources, this.configs);
       });
   }
 
@@ -74,7 +56,7 @@ export default class ModelBoot {
   */
   get configs(){
     let configValues = null;
-    let _configs = glob.sync(`${this[rootDir]}/*-binder.config.js`);
+    let _configs = ReadGlob(`${this[rootDir]}/*-binder.config.js`);
     if (_configs && _configs.length > 0){
       if (_configs.length > 1){
         throw new Error(`Only one (1) model binder.config file, should be in ${this[rootDir]}`);  

@@ -1,20 +1,13 @@
 /// <reference path="../typings/index.d.ts" />
 
-import Model from './model';
-import { SeedData } from './model-loader-utils';
-import { toSpinalCase, randomId } from './utils';
 import { ModelBinder } from './model-binder';
+import { MongoDbUtils } from './model-loader-mongodb-utils';
 import * as events from 'events';
+import * as Rx from 'rx';
 
 let app = Symbol();
 let configs = Symbol();
 let schema = Symbol();
-let attached = (app, dataSource, model, isPublic = false) => {
-  app.model(model, { 
-    dataSource: (dataSource) ? dataSource : 'db', 
-    public: isPublic 
-  }); 
-};
 
 /**
  * Model Loader for MongoDB DataSource
@@ -31,22 +24,8 @@ export default class ModelLoaderMongodb {
   }
 
   /**
-   * @param {any} schemaCopy
-   * @param {any} collection
-   * @returns
-   */
-  createNewSchema(schemaCopy, collection){
-    let modelName = `${collection}_${randomId()}`;
-    let newCopy = JSON.parse(JSON.stringify(schemaCopy));       
-    newCopy.name = modelName;
-    newCopy.plural = `${modelName}s`;
-    newCopy.http.path = toSpinalCase(collection);
-    newCopy.mongodb = { collection: collection.toLowerCase() };
-    return newCopy;
-  }
-
-  /**
    * Initialize/Load/Attached the Model to loopback 
+   * return {Observable} => value = { configs: <object>, modelName: <string>, dataSource: <string> }
    */
   onInit(){
     let Schema = this[schema];
@@ -58,21 +37,28 @@ export default class ModelLoaderMongodb {
 
     delete schemaCopy.mongodb;
 
-    let model = this[app].loopback.createModel(schemaCopy);
-    model.on('attached', () => { ModelBinder.bindTo(Configs, model); });   
-    attached(this[app], dataSource, model, true);
-
-    if (collections){
-      collections.forEach((collection) => {
-        let newCopy = this.createNewSchema(schemaCopy, collection);
-        let newModel = this[app].loopback.createModel(newCopy);
-        newModel.on('attached', () => {
-          SeedData(Configs.seed, newModel, collection, dataSource);
-          Model.instance[model.modelName][collection] = newModel;
+    return Rx.Observable.create((observer) => {
+      let model = this[app].loopback.createModel(schemaCopy);
+      model.on('attached', () => { 
+        ModelBinder.bindTo(Configs, model);
+        MongoDbUtils.createCollection({
+          app: this[app],
+          modelName: model.modelName,
+          dataSource: dataSource,
+          collections: collections,
+          schemaCopy: schemaCopy,
+          configs: Configs
+        }).subscribe((value) => {
+          observer.onNext(value);
+          observer.onCompleted();
         });  
-        attached(this[app], dataSource, newModel, false);
+      });   
+      this[app].model(model, { 
+        dataSource: (dataSource) ? dataSource : 'db', 
+        public: true 
       }); 
-    }
+    });
+    
   }
 
 }

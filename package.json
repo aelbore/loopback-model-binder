@@ -36,7 +36,7 @@
     "vinyl-paths": "^2.1.0"
   },
   "dependencies": {
-    "async": "^2.0.1",
-    "glob": "^7.0.5"
+    "glob": "^7.0.5",
+    "rx": "^4.1.0"
   }
 }

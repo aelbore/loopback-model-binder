@@ -1,3 +1,5 @@
+/// <reference path="../typings/index.d.ts" />
+
 import { Bind, Routes  } from './entity-base-utils';
 
 let modelName, route;
@@ -24,18 +26,19 @@ export default class EntityBase {
    * @return {void}
    */
   onInit(){
-    let routes = Routes(route, this.constructor.name);
-    if (routes){
-      routes.forEach((routeElement) => {      
-        if (Array.isArray(routeElement)){
-          routeElement.forEach((element) => {
-            Bind(modelName, element, this);
-          });
-        } else {
-          Bind(modelName, routeElement, this);
-        }
+    Routes(route, this.constructor.name)
+      .subscribe((routes) => {
+        for(let i = 0; i < routes.length; i++){
+          let routeElement = routes[i];
+          if (Array.isArray(routeElement)){
+            routeElement.forEach((element) => {
+              Bind(modelName, element, this);
+            });
+          } else {
+            Bind(modelName, routeElement, this);
+          } 
+        } 
       });
-    }
   }
 
 }

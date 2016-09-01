@@ -12,8 +12,6 @@ export {
   GetMethodsFromModel,
   randomId,
   RequireObject,
-  AddDataSourcesTo,
-  AddModelConfigTo,
   isFunction,
   modelLoader,
   dataSourceLoader,
@@ -21,5 +19,7 @@ export {
   toSpinalCase,
   PathJoin,
   ReadFileSync,
-  ReadGlob
-} from './dist';
+  ReadGlob,
+  GetModelSchema,
+  GetDSConnector
+} from './src';

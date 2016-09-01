@@ -26,12 +26,12 @@ export {
   GetMethodsFromModel,
   randomId,
   RequireObject,
-  AddDataSourcesTo,
-  AddModelConfigTo,
   isFunction,
   PropertyListChanged,
   toSpinalCase,
   PathJoin,
   ReadFileSync,
-  ReadGlob
+  ReadGlob,
+  GetModelSchema,
+  GetDSConnector
 } from './utils';
