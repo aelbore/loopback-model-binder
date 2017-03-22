@@ -1,5 +1,3 @@
-/// <reference path="../typings/index.d.ts" />
-
 import Model from './model';
 import Entity from './entity-collections';
 import { isFunction, RequireObject, Hook } from './utils';
@@ -20,41 +18,41 @@ let Bind = (modelName, element, entity) => {
   let methods = Object.keys(element).filter((o) => { return o !== 'isEnable' });
   methods.forEach((method) => {
     let methodElement = entity[method];
-    if (methodElement){
-      if (isFunction(methodElement)){
+    if (methodElement) {
+      if (isFunction(methodElement)) {
         model[method] = methodElement;
         model[method]['isEnable'] = element.isEnable;
         model.remoteMethod(method, element[method]);
         Hook(model, entity, method);
       }
     }
-  });  
-},
-/*
-* Get the Routes for entity
-* @param  {object | array} route => route provided
-* @param  {string} entityName => name of the entity that has routes
-* @return {Observable} 
-*/
-Routes = (route, entityName) => {
-  return Rx.Observable.create((observer) => {
-    let routes = [];
-    if (route) { routes.push(route); }
-    observer.onNext(routes); observer.onCompleted();
-  }).flatMap((routes) => { 
-    return getRoutes(routes, entityName) 
   });
 },
-getRoutes = (routes, entityName) => {
-  return Rx.Observable.create((observer) => {
-    if (routes.length < 1){
-      let entity = Entity.collection.byEntity(entityName);
-      for (let i = 0; i < entity.routes.length; i++){
-        routes.push(RequireObject(entity.routes[i]));
-      }     
-    } 
-    observer.onNext(routes); observer.onCompleted();    
-  });
-};
+  /*
+  * Get the Routes for entity
+  * @param  {object | array} route => route provided
+  * @param  {string} entityName => name of the entity that has routes
+  * @return {Observable} 
+  */
+  Routes = (route, entityName) => {
+    return Rx.Observable.create((observer) => {
+      let routes = [];
+      if (route) { routes.push(route); }
+      observer.onNext(routes); observer.onCompleted();
+    }).flatMap((routes) => {
+      return getRoutes(routes, entityName)
+    });
+  },
+  getRoutes = (routes, entityName) => {
+    return Rx.Observable.create((observer) => {
+      if (routes.length < 1) {
+        let entity = Entity.collection.byEntity(entityName);
+        for (let i = 0; i < entity.routes.length; i++) {
+          routes.push(RequireObject(entity.routes[i]));
+        }
+      }
+      observer.onNext(routes); observer.onCompleted();
+    });
+  };
 
 export { Bind, Routes }

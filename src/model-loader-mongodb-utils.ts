@@ -1,5 +1,3 @@
-/// <reference path="../typings/index.d.ts" />
-
 import { randomId, toSpinalCase } from './utils';
 import { SeedData } from './model-loader-utils';
 import Model from './model';
@@ -13,25 +11,25 @@ let MongoDbUtils = {
       .flatMap((collection) => {
         let newCopy = MongoDbUtils.createNewSchema(options.schemaCopy, collection);
         return Rx.Observable.create((observer) => {
-            let newModel = options.app.loopback.createModel(newCopy);
-            newModel.on('attached', () => {
-              SeedData(options.configs.seed, newModel, collection, options.dataSource);
-              Model.instance[options.modelName][collection] = newModel;
-              if ((collections.indexOf(collection) + 1) === collections.length){
-                observer.onNext(options.modelName); 
-                observer.onCompleted();
-              }
-            }); 
-            options.app.model(newModel, { 
-              dataSource: (options.dataSource) ? options.dataSource : 'db', 
-              public: false 
-            });       
+          let newModel = options.app.loopback.createModel(newCopy);
+          newModel.on('attached', () => {
+            SeedData(options.configs.seed, newModel, collection, options.dataSource);
+            Model.instance[options.modelName][collection] = newModel;
+            if ((collections.indexOf(collection) + 1) === collections.length) {
+              observer.onNext(options.modelName);
+              observer.onCompleted();
+            }
+          });
+          options.app.model(newModel, {
+            dataSource: (options.dataSource) ? options.dataSource : 'db',
+            public: false
+          });
         });
       });
   },
   createNewSchema: (schemaCopy, collection) => {
     let modelName = `${collection}_${randomId()}`;
-    let newCopy = JSON.parse(JSON.stringify(schemaCopy));       
+    let newCopy = JSON.parse(JSON.stringify(schemaCopy));
     newCopy.name = modelName;
     newCopy.plural = `${modelName}s`;
     newCopy.http.path = toSpinalCase(collection);

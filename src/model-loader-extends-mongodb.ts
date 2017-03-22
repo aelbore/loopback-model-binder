@@ -1,5 +1,3 @@
-/// <reference path="../typings/index.d.ts" />
-
 import Model from './model';
 import { toSpinalCase, randomId } from './utils';
 import * as events from 'events';
@@ -21,25 +19,25 @@ export default class ModelLoaderExtendsMongodb {
     this[configs] = Args[3];
   }
 
-  createNewSchema(schemaCopy, collection){
+  createNewSchema(schemaCopy, collection) {
     let modelName = `${collection}_${randomId()}`;
-    let newCopy = JSON.parse(JSON.stringify(schemaCopy));       
+    let newCopy = JSON.parse(JSON.stringify(schemaCopy));
     newCopy.name = modelName;
     newCopy.plural = `${modelName}s`;
     newCopy.http.path = toSpinalCase(collection);
     newCopy.mongodb = { collection: collection.toLowerCase() };
     return newCopy;
-  }  
+  }
 
-  onInit(){
+  onInit() {
     let ds = this[dataSource];
     let newSchema = JSON.parse(JSON.stringify(this[schema]));
-    if (schema.hasOwnProperty('mongodb')){
-       delete newSchema.mongodb;
+    if (schema.hasOwnProperty('mongodb')) {
+      delete newSchema.mongodb;
     }
-    if (newSchema.hasOwnProperty('extends')){
+    if (newSchema.hasOwnProperty('extends')) {
       let extendKeys = Object.keys(newSchema.extends);
-      if (extendKeys && extendKeys.length > 0){
+      if (extendKeys && extendKeys.length > 0) {
         let collections = newSchema.extends[ds].collections;
         collections.forEach((collection) => {
           let newCopy = this.createNewSchema(newSchema, collection);
@@ -47,11 +45,11 @@ export default class ModelLoaderExtendsMongodb {
           newModel.on('attached', () => {
             console.log(`Model ${newSchema.name} extends ${collection}.`);
             Model.instance[newSchema.name][collection] = newModel;
-          });  
-          this[app].model(newModel, { dataSource: (ds) ? ds : 'db',  public: false }); 
+          });
+          this[app].model(newModel, { dataSource: (ds) ? ds : 'db', public: false });
         });
       }
     }
-  }  
+  }
 
 }

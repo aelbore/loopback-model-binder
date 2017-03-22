@@ -7,22 +7,22 @@ import { ModelBinder } from './model-binder';
 import { modelBootstrap } from './model-bootstrap';
 
 export {
-   Model, 
-   EntityBase,
-   ModelBinder, 
-   modelBootstrap, 
-   ModelBoot, 
-   Entity,
-   ModelSeed 
-} 
+  Model,
+  EntityBase,
+  ModelBinder,
+  modelBootstrap,
+  ModelBoot,
+  Entity,
+  ModelSeed
+}
 
-export { modelLoader  } from './model-loader';
+export { modelLoader } from './model-loader';
 export { dataSourceLoader } from './datasource-loader';
 
 export {
-  BinderHelper, 
-  Hook, 
-  EnableDisableRemoteMethods, 
+  BinderHelper,
+  Hook,
+  EnableDisableRemoteMethods,
   GetMethodsFromModel,
   randomId,
   RequireObject,

@@ -17,50 +17,50 @@ export default class ModelSeed {
     this[_createdCounts] = 0;
     this[_totalLoop] = 0;
   }
-  
+
   /**
    * @readonly
    */
-  get model(){
+  get model() {
     return this[_model];
   }
 
   /**
    * @readonly
-   */  
-  get dataSource(){
+   */
+  get dataSource() {
     return this[_dataSource];
   }
 
   /**
    * Execute the migration it must be implemented.
    */
-  execute(){
+  execute() {
     throw new Error(`Please implement this method.`);
   }
- 
+
   /**
    * @param {any} data
    * @param {any} filter
    * @param {any} [options=null]
    */
-  migrate(data, filter, options = null){
+  migrate(data, filter, options = null) {
     this.model.findOrCreate(filter, data,
       (error, instance, created) => {
         this[_totalLoop]++;
         if (error) console.log(error);
-        if (created){
+        if (created) {
           this[_createdCounts]++;
-          if ((this[_totalLoop] === options.length) && options){
+          if ((this[_totalLoop] === options.length) && options) {
             console.log(`> Model: ${options.modelName}, ${this[_createdCounts]} record(s) created successfully.`);
           }
         } else {
-          if (instance){
+          if (instance) {
             let propertiesListChanged = PropertyListChanged(data, instance);
-            if (propertiesListChanged && propertiesListChanged.length > 0){
+            if (propertiesListChanged && propertiesListChanged.length > 0) {
               this.model.upsert(data, (err, model) => {
                 if (err) console.log(error);
-                console.log(`> list of properties was updated [${propertiesListChanged.join()}].`);    
+                console.log(`> list of properties was updated [${propertiesListChanged.join()}].`);
               });
             }
           }
