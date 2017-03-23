@@ -13,7 +13,7 @@ export default class EntityBase {
    * @param {any} ModelName => name of the Model that you created
    * @param {any} Route => its optional, single route that you created
    */
-  constructor(ModelName, Route) {
+  constructor(ModelName?: any, Route?: any) {
     modelName = ModelName;
     route = Route;
   }

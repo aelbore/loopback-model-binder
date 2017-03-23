@@ -7,7 +7,7 @@ let modelBootstrap = (app, bootRootDir = __dirname, isEnable = false) => {
   Rx.Observable.from(bootFiles)
     .flatMap((element) => {
       return onInitBootFile(app, element);
-    }).subscribe((modelName) => {
+    }).subscribe((modelName: any) => {
       let appModel = app.models[modelName];
       if (appModel) {
         EnableDisableRemoteMethods(appModel, isEnable);
@@ -19,15 +19,13 @@ let modelBootstrap = (app, bootRootDir = __dirname, isEnable = false) => {
       let boot = RequireObject(bootFile);
       if (boot && isFunction(boot)) {
         let modelBoot = new boot(app);
-        if (modelBoot instanceof ModelBoot) {
-          modelBoot.onInit()
-            .subscribe((modelName) => {
-              observer.onNext(modelName);
-              observer.onCompleted();
-            }, (error) => {
-              observer.onError(error);
-            });
-        }
+        modelBoot.onInit()
+          .subscribe((modelName) => {
+            observer.onNext(modelName);
+            observer.onCompleted();
+          }, (error) => {
+            observer.onError(error);
+          });
       }
     });
   };

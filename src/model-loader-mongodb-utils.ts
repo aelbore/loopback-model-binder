@@ -8,7 +8,7 @@ let MongoDbUtils = {
     let collections = options.collections;
     let model = options.model;
     return Rx.Observable.from(collections)
-      .flatMap((collection) => {
+      .flatMap((collection: any) => {
         let newCopy = MongoDbUtils.createNewSchema(options.schemaCopy, collection);
         return Rx.Observable.create((observer) => {
           let newModel = options.app.loopback.createModel(newCopy);
@@ -27,7 +27,7 @@ let MongoDbUtils = {
         });
       });
   },
-  createNewSchema: (schemaCopy, collection) => {
+  createNewSchema: (schemaCopy: any, collection: any) => {
     let modelName = `${collection}_${randomId()}`;
     let newCopy = JSON.parse(JSON.stringify(schemaCopy));
     newCopy.name = modelName;
