@@ -3,6 +3,7 @@ import Entity from './entity-collections';
 import ModelBoot from './model-boot';
 import EntityBase from './entity-base';
 import ModelSeed from './model-seed';
+import DataSourceConfig from './datasource-config';
 import { ModelBinder } from './model-binder';
 import { modelBootstrap } from './model-bootstrap';
 
@@ -13,7 +14,8 @@ export {
   modelBootstrap,
   ModelBoot,
   Entity,
-  ModelSeed
+  ModelSeed,
+  DataSourceConfig
 }
 
 export { modelLoader } from './model-loader';

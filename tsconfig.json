@@ -2,8 +2,11 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceRoot": "src",
+    "sourceMap": true,
+    "rootDir": "src",
     "outDir": "dist",
     "lib": ["es6", "dom"],
     "declaration": true,

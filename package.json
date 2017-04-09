@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "glob": "^7.0.5",
+    "json-templater": "^1.1.0",
     "rx": "^4.1.0"
   }
 }

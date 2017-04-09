@@ -9,7 +9,7 @@ let SeedData = (seed, model, collection, dataSource) => {
   if (seed.isSeed) {
     let files = ReadGlob(PathJoin(seed.rootDir, `./${toSpinalCase(collection)}.js`));
     if (files) {
-      let RxNodeCallBack = Rx.Observable.fromNodeCallback(seeFile);
+      let RxNodeCallBack: any = Rx.Observable.fromNodeCallback(seeFile);
       Rx.Observable
         .for(files, file => RxNodeCallBack(file, model, dataSource))
         .subscribe(() => { });

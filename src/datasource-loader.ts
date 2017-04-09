@@ -1,5 +1,7 @@
 import { isFunction, GetModelSchema, toSpinalCase, ReadGlob, PathJoin, BaseName, RequireObject } from './utils';
+import { DataSourceConfig } from './index';
 import * as Rx from 'rx';
+import * as jsonTemplaterObject from 'json-templater/object';
 
 let dataSourceLoader = {
   /**
@@ -30,7 +32,8 @@ let dataSourceLoader = {
             let error = new Error(`Should have ${fileName} on ${dsDirPath} directory for multiple dataSources.`);
             observer.onError(error);
           }
-          let source = RequireObject(dataSource);
+          let dsConfig = DataSourceConfig.instance;
+          let source = jsonTemplaterObject(RequireObject(dataSource), dsConfig.config);
           let dsKeys = Object.keys(source);
           if (ds && (dataSources.length > 1) && (dsKeys && dsKeys.length > 1)) {
             let _error = new Error(`File ${ds} should have only one(1) dataSource.`);
