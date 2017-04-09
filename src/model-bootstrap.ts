@@ -1,5 +1,3 @@
-/// <reference path="../typings/index.d.ts" />
-
 import { EnableDisableRemoteMethods, RequireObject, isFunction, ReadGlob } from './utils';
 import ModelBoot from './model-boot';
 import * as Rx from 'rx';
@@ -9,29 +7,27 @@ let modelBootstrap = (app, bootRootDir = __dirname, isEnable = false) => {
   Rx.Observable.from(bootFiles)
     .flatMap((element) => {
       return onInitBootFile(app, element);
-    }).subscribe((modelName) => {
+    }).subscribe((modelName: any) => {
       let appModel = app.models[modelName];
-      if (appModel){
-        EnableDisableRemoteMethods(appModel, isEnable);  
-      }        
+      if (appModel) {
+        EnableDisableRemoteMethods(appModel, isEnable);
+      }
     });
 },
-onInitBootFile = (app, bootFile) => {
-  return Rx.Observable.create((observer) => {
-    let boot = RequireObject(bootFile);
-    if (boot && isFunction(boot)){
-      let modelBoot = new boot(app);
-      if (modelBoot instanceof ModelBoot){
+  onInitBootFile = (app, bootFile) => {
+    return Rx.Observable.create((observer) => {
+      let boot = RequireObject(bootFile);
+      if (boot && isFunction(boot)) {
+        let modelBoot = new boot(app);
         modelBoot.onInit()
-          .subscribe((modelName) => { 
+          .subscribe((modelName) => {
             observer.onNext(modelName);
-            observer.onCompleted();               
+            observer.onCompleted();
           }, (error) => {
             observer.onError(error);
           });
       }
-    }         
-  });
-};
+    });
+  };
 
 export { modelBootstrap }

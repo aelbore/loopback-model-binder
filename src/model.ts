@@ -1,4 +1,3 @@
-
 let singleton = Symbol(),
   _model = Symbol();
 
@@ -7,18 +6,18 @@ let singleton = Symbol(),
  * @class Model
  */
 export default class Model {
-  
-  constructor(){ 
+
+  constructor() {
   }
-  
+
   /**
    * Object static instance for the Model
    * @static
    */
-  static get instance(){
-    if (!this[singleton]){
+  static get instance() {
+    if (!this[singleton]) {
       this[singleton] = new Model();
-    } 
+    }
     return this[singleton];
   }
 
@@ -26,9 +25,9 @@ export default class Model {
    * Initialize or create Model 
    * @param {string} model => Model object
    */
-  create(model){
-    if (!(Model.instance.hasOwnProperty(model.modelName))){
+  create(model) {
+    if (!(Model.instance.hasOwnProperty(model.modelName))) {
       Model.instance[model.modelName] = model;
     }
-  }  
+  }
 }

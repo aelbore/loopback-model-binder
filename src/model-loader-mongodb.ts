@@ -1,5 +1,3 @@
-/// <reference path="../typings/index.d.ts" />
-
 import { ModelBinder } from './model-binder';
 import { MongoDbUtils } from './model-loader-mongodb-utils';
 import * as events from 'events';

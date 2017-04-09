@@ -1,5 +1,3 @@
-/// <reference path="../typings/index.d.ts" />
-
 import Model from './model';
 import { toSpinalCase } from './utils';
 import * as events from 'events';
@@ -20,7 +18,7 @@ export default class ModelLoaderExtendsRest {
     this[dataSource] = Args[2];
   }
 
-  onInit(){
+  onInit() {
     let datasource = this[app].dataSources[this[dataSource]];
     let dataAccessObject = datasource.connector.DataAccessObject;
 
@@ -28,7 +26,7 @@ export default class ModelLoaderExtendsRest {
 
     let DAObjectKeys = Object.keys(dataAccessObject)
       .filter((key) => { return (key !== 'invoke'); });
-    if (DAObjectKeys){
+    if (DAObjectKeys) {
       DAObjectKeys.forEach((daoKey) => {
         console.log(`Model ${newSchema.name} extends ${daoKey} from ${this[dataSource]}`);
         Model.instance[newSchema.name][daoKey] = dataAccessObject[daoKey];
