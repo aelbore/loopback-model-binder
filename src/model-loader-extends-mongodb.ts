@@ -11,7 +11,7 @@ export default class ModelLoaderExtendsMongodb {
 
   constructor(...Args) {
     /// http://stackoverflow.com/questions/9768444/possible-eventemitter-memory-leak-detected
-    events.EventEmitter.prototype._maxListeners = 0;
+    events.EventEmitter.prototype.setMaxListeners(0);
 
     this[app] = Args[0];
     this[schema] = Args[1];
