@@ -41,15 +41,16 @@ Hook = (Model, ModelObject, FnName) => {
 EnableDisableRemoteMethods = (model, isEnable) => {
   let methods = GetMethodsFromModel(model);
   methods.forEach((element) => {
-    if (model[element]){
-      if (model[element].hasOwnProperty('isEnable')) {
-        model.disableRemoteMethod(element, !(model[element]['isEnable'])); 
+    if (model[element]) {
+      let enable = model[element].hasOwnProperty('isEnable') ? !(model[element]['isEnable']) : !(isEnable)
+      // Use disableRemoteMethodByName (loopback 3) otherwise use disableRemoteMethod (loopback 2)
+      if (!model.disableRemoteMethodByName) {
+        model.disableRemoteMethod(element, enable);
       } else {
-        model.disableRemoteMethod(element, !(isEnable)); 
-      } 
+        if (!enable) model.disableRemoteMethodByName(element);
+      }
     }
-  }, this);
-  model.disableRemoteMethod('updateAttributes', false);  
+  }, this);  
 },
 GetMethodsFromModel = (model) => {
   let models = [];
